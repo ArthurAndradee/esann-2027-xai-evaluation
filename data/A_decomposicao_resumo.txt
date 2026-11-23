@@ -1,0 +1,14 @@
+DECOMPOSIÇÃO DE A: queda pelas lesões, queda pelo controle e A (524 imagens de teste com lesão; média de 3 treinos)
+queda_lesao_pontos e queda_controle_pontos: queda média de p(RD referível) em pontos (1 ponto = 0,01); A_pontos = queda_lesao − queda_controle; A_logit = média de [logit p(controle borrado) − logit p(lesões borradas)] (unidades de logit).
+
+efficientnetv2s: sem filtro lesão 10.7, controle -0.8, A 11.5 pontos; controle entre -12.9 e 3.4 nos 17 filtros (-6.0 a 0.5 sem Frangi/Canny/Otsu); ρ de Spearman entre A (pontos) e A (logit) nos 17 filtros = 0.95; p original médio entre filtros 0.61–0.82 (0.69–0.82 sem os destrutivos)
+   queda das lesões (CLAHE / AHE / canal verde): 1.4 / -0.8 / 13.4
+efficientnetv2b2: sem filtro lesão 5.2, controle -2.4, A 7.6 pontos; controle entre -9.7 e -0.6 nos 17 filtros (-3.7 a -0.6 sem Frangi/Canny/Otsu); ρ de Spearman entre A (pontos) e A (logit) nos 17 filtros = 0.93; p original médio entre filtros 0.40–0.81 (0.70–0.81 sem os destrutivos)
+   queda das lesões (CLAHE / AHE / canal verde): -0.0 / 1.5 / 10.9
+inceptionv3: sem filtro lesão 5.5, controle -1.9, A 7.4 pontos; controle entre -1.7 e -0.2 nos 17 filtros (-1.7 a -0.4 sem Frangi/Canny/Otsu); ρ de Spearman entre A (pontos) e A (logit) nos 17 filtros = 0.97; p original médio entre filtros 0.75–0.93 (0.75–0.83 sem os destrutivos)
+   queda das lesões (CLAHE / AHE / canal verde): 4.1 / 4.3 / 14.7
+resnet50: sem filtro lesão 9.0, controle -0.9, A 9.9 pontos; controle entre -1.8 e 0.6 nos 17 filtros (-1.8 a 0.6 sem Frangi/Canny/Otsu); ρ de Spearman entre A (pontos) e A (logit) nos 17 filtros = 0.99; p original médio entre filtros 0.75–0.94 (0.75–0.83 sem os destrutivos)
+   queda das lesões (CLAHE / AHE / canal verde): 4.7 / 1.5 / 19.6
+
+Leitura: o efeito dos filtros em A vem da queda causada pelas lesões; a queda do controle costuma ser pequena e negativa (borrar o controle sobe p um pouco, o que soma pontos a A): de −6 a +0,6 nos filtros não destrutivos (até −13 no EfficientNetV2-S com Canny), maior no EfficientNetV2-S e -B2 do que no InceptionV3 e ResNet-50.
+A ordem dos filtros é praticamente a mesma em probabilidade e em logit.

@@ -1,0 +1,9 @@
+Painel (a): EfficientNetV2-S, pipelines nao colapsados (flag degenerado em nenhum dos 3 treinos), AUC media > 0,89;
+5 destacados = indices np.linspace(2, n-3, 5) do ranking crescente de A entre os candidatos (n=49):
+  BenGraham > CLAHE4.0 > Gaussian  AUC 0.902  A 4.27 pontos
+  Retinex > GreenChannel > AHE40.0 > Morpho  AUC 0.891  A 6.82 pontos
+  MaxGreen2.0 > Gaussian  AUC 0.912  A 8.14 pontos
+  BenGraham > MaxGreen2.0 > Morpho  AUC 0.894  A 10.61 pontos
+  LABNorm > Grayscale  AUC 0.897  A 12.81 pontos
+Painel (b): Spearman (scipy.stats.spearmanr); entre pipelines = AUC x A das medias dos pipelines (185);
+entre treinos = desvios em relacao a media do pipeline (2220 treinos).

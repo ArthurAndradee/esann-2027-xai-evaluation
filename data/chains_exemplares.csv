@@ -1,0 +1,6 @@
+condicao_id,chain,n_passos,AUC_mean4,A_points_mean4
+BenGraham_CLAHE4.0_Gaussian,BenGraham > CLAHE4.0 > Gaussian,3,0.902590429394768,4.226402539524964
+AHE40.0_Gaussian,AHE40.0 > Gaussian,2,0.9029419490412398,4.259016782041803
+LABNorm_Grayscale,LABNorm > Grayscale,2,0.9044194904123982,14.10125026134412
+LABNorm_GreenChannel_Median,LABNorm > GreenChannel > Median,3,0.9010182481187904,12.712485570420265
+Retinex_GreenChannel_CLAHE4.0_Gaussian,Retinex > GreenChannel > CLAHE4.0 > Gaussian,4,0.9064146541201192,7.90439790448602

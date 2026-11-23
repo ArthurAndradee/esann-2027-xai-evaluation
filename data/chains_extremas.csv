@@ -1,0 +1,5 @@
+chain
+BenGraham > CLAHE4.0 > Gaussian
+AHE40.0 > Gaussian
+LABNorm > GreenChannel > Median
+LABNorm > Grayscale

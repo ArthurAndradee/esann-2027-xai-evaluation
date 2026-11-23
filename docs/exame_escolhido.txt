@@ -1,0 +1,19 @@
+Exame principal (1A-1D e figuras com um exame): 1172_1.png
+Regra: a do v2 (esann_figs/make_fig1_panels.py): teste; grau>=2; p>0,5; controle de mesma forma, 0% sobre lesao e 0% fora do FOV; >=5 componentes; area acima da mediana; A mais proximo da mediana de A (so 2 candidatas). O exame do ERAMIA (0361_1.png) foi descartado: controle 29% sobre lesao anotada, A negativo.
+Grade 1E: o principal + 1 exame por grau 2, 3 e 4 pela regra relaxada (p>0,5; controle <=5% sobre lesao e fora do FOV; mesma forma; >=3 regioes; A mais proximo da mediana de A das 524).
+
+                                                          0                                      1                                      2                                      3
+imagem                                           1172_1.png                             0689_1.png                             1710_3.png                             0389_3.png
+divisao                                               teste                                  teste                                  teste                                  teste
+grau                                                      2                                      2                                      3                                      4
+rede                            EfficientNetV2-S sem filtro            EfficientNetV2-S sem filtro            EfficientNetV2-S sem filtro            EfficientNetV2-S sem filtro
+treino                                                    0                                      0                                      0                                      0
+camada_gradcam        2x (block6a_expand_activation, 19x19)  2x (block6a_expand_activation, 19x19)  2x (block6a_expand_activation, 19x19)  2x (block6a_expand_activation, 19x19)
+p_original                                         0.866296                                0.93937                               0.987423                               0.988415
+p_lesoes_borradas                                  0.572925                                0.86192                               0.927098                               0.919751
+p_controle_borrado                                  0.85355                               0.919946                               0.988253                               0.990753
+A_da_imagem_pontos                                28.062534                               5.802542                                6.11552                               7.100225
+n_regioes                                                11                                      6                                    121                                     20
+area_mascara_pct                                   3.298621                               3.512265                               3.364616                               1.524591
+controle_sobre_lesao                                    0.0                               0.007325                               0.032912                                    0.0
+papel                                     principal (1A-1D)                               grade 1E                               grade 1E                               grade 1E

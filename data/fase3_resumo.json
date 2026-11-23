@@ -1,0 +1,86 @@
+{
+ "precondicao": {
+  "efficientnetv2s": {
+   "apta": true,
+   "auc_baseline": 0.8747997861568239,
+   "seeds": 5
+  },
+  "efficientnetv2b2": {
+   "apta": true,
+   "auc_baseline": 0.8852374779183677,
+   "seeds": 5
+  },
+  "inceptionv3": {
+   "apta": true,
+   "auc_baseline": 0.9082880078775432,
+   "seeds": 5
+  },
+  "resnet50": {
+   "apta": true,
+   "auc_baseline": 0.8950041627574782,
+   "seeds": 5
+  }
+ },
+ "arquiteturas_aptas": [
+  "efficientnetv2s",
+  "efficientnetv2b2",
+  "inceptionv3",
+  "resnet50"
+ ],
+ "arquiteturas_com_17_filtros": [
+  "efficientnetv2s",
+  "efficientnetv2b2",
+  "inceptionv3",
+  "resnet50"
+ ],
+ "hipoteses": {
+  "H8a": {
+   "filtro": "CLAHE4.0",
+   "arquiteturas_conclusivas": 4,
+   "arquiteturas_em_que_vale": 0,
+   "veredito": "nao confirmada"
+  },
+  "H8b": {
+   "filtro": "GreenChannel",
+   "arquiteturas_conclusivas": 4,
+   "arquiteturas_em_que_vale": 2,
+   "veredito": "nao confirmada"
+  },
+  "H8c": {
+   "filtro": "Grayscale",
+   "arquiteturas_conclusivas": 4,
+   "arquiteturas_em_que_vale": 0,
+   "veredito": "nao confirmada"
+  },
+  "H6": {
+   "rho_por_rede": {
+    "efficientnetv2s": 0.5808823529411765,
+    "efficientnetv2b2": 0.23039215686274508,
+    "inceptionv3": 0.20098039215686275,
+    "resnet50": 0.23284313725490197
+   },
+   "media_rho": 0.3112745098039216,
+   "p_permutacao": 0.0871912808719128,
+   "redes_com_rho_positivo": 4,
+   "veredito": "nao confirmada"
+  },
+  "H7": {
+   "pares": {
+    "efficientnetv2s~efficientnetv2b2": 0.928921568627451,
+    "efficientnetv2s~inceptionv3": 0.7426470588235294,
+    "efficientnetv2s~resnet50": 0.7916666666666666,
+    "efficientnetv2b2~inceptionv3": 0.9019607843137255,
+    "efficientnetv2b2~resnet50": 0.9044117647058824,
+    "inceptionv3~resnet50": 0.8823529411764706
+   },
+   "media_spearman": 0.8586601307189543,
+   "p_permutacao": 9.999000099990002e-05,
+   "veredito": "confirmada"
+  }
+ },
+ "B": 10000,
+ "semente": 20261113,
+ "alfa": 0.05,
+ "min_seeds": 4,
+ "auc_min": 0.8
+}

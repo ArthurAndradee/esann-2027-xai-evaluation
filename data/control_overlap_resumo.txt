@@ -1,0 +1,39 @@
+CONTROLE DESLOCADO: SOBREPOSIÇÃO COM AS LESÕES ANOTADAS (524 imagens de teste com lesão)
+Definições: controle_sobre_lesao_pct = % da área do controle que cai sobre lesão anotada (união das máscaras originais, sem dilatar); controle_fora_do_FOV_pct = % da área do controle fora do campo de visão;
+area_mascara_pct = área da máscara dilatada 3x3 (a que é borrada) em % da imagem de 299 x 299 px. O controle é o mesmo em todas as execuções (rng(0), mesma ordem de imagens).
+
+Sobreposição do controle com lesão anotada: mediana 0.96%; Q1 0.00%; Q3 3.65%; mín 0.00%; máx 56.83%
+  % das imagens com sobreposição 0: 35.5% (186); ≤ 5%: 83.6% (438); > 20%: 2.7% (14)
+Controle fora do FOV: mediana 1.37%; Q1 0.00%; Q3 3.49%; mín 0.00%; máx 24.31%
+  % das imagens com 0% fora do FOV: 37.4%; > 5%: 12.0%
+Área da máscara dilatada: mediana 2.34%; Q1 0.80%; Q3 5.17%; mín 0.01%; máx 39.06%
+Controle com a mesma forma (nenhum pixel cortado ao deslocar): 46.8% das imagens.
+Correlação de Spearman entre a área da máscara e a sobreposição: 0.78 (imagens com muita lesão têm menos área livre para o controle).
+
+ANÁLISE DE SENSIBILIDADE: só as 438 imagens com sobreposição ≤ 5%, contra as 524
+(a AUC usa sempre as 553 imagens de teste; os pipelines e os 3 treinos são os mesmos; bootstrap de condições com 2.000 reamostragens, não 10.000)
+
+A médio, sem filtro (pontos): efficientnetv2s 11.5 / 10.6; efficientnetv2b2 7.6 / 7.9; inceptionv3 7.4 / 7.4; resnet50 9.9 / 10.0   [formato: 524 / subconjunto]
+A médio, média dos 185 pipelines (pontos): efficientnetv2s 5.3 / 5.0; efficientnetv2b2 4.1 / 4.0; inceptionv3 4.6 / 4.6; resnet50 5.1 / 5.0
+
+H2 | 524 imagens
+  ρ médio entre redes 0.878 (pares 0.846 a 0.966), p de permutação 0.0001
+  veredito: confirmada
+H2 | 438 imagens (sobreposição ≤ 5%)
+  ρ médio entre redes 0.917 (pares 0.890 a 0.968), p de permutação 0.0001
+  veredito: confirmada
+H3 | 524 imagens
+  diferença (ρ entre − ρ dentro): 0.69 [0.56; 0.81] / 0.70 [0.56; 0.83] / 0.76 [0.65; 0.87] / 0.80 [0.70; 0.90]; ρ entre 0.77 / 0.73 / 0.81 / 0.84; ρ dentro 0.08 / 0.03 / 0.05 / 0.04
+  veredito: IC > 0 em 4 de 4: confirmada
+H3 sem colapsados | 524 imagens
+  diferença (ρ entre − ρ dentro): 0.64 [0.50; 0.77] / 0.66 [0.48; 0.81] / 0.61 [0.40; 0.79] / 0.66 [0.49; 0.80]; ρ entre 0.73 / 0.65 / 0.57 / 0.69; ρ dentro 0.08 / -0.00 / -0.04 / 0.03
+  veredito: IC > 0 em 4 de 4: confirmada
+H3 | 438 imagens (sobreposição ≤ 5%)
+  diferença (ρ entre − ρ dentro): 0.71 [0.58; 0.82] / 0.75 [0.61; 0.87] / 0.77 [0.66; 0.88] / 0.81 [0.71; 0.90]; ρ entre 0.80 / 0.76 / 0.82 / 0.85; ρ dentro 0.09 / 0.01 / 0.05 / 0.05
+  veredito: IC > 0 em 4 de 4: confirmada
+H3 sem colapsados | 438 imagens (sobreposição ≤ 5%)
+  diferença (ρ entre − ρ dentro): 0.66 [0.53; 0.79] / 0.69 [0.52; 0.84] / 0.63 [0.43; 0.81] / 0.69 [0.53; 0.83]; ρ entre 0.76 / 0.69 / 0.61 / 0.72; ρ dentro 0.09 / -0.01 / -0.03 / 0.02
+  veredito: IC > 0 em 4 de 4: confirmada
+
+CONCLUSÃO: os vereditos de H2 e H3 (inclusive H3 sem colapsados) NÃO mudam ao restringir às imagens com sobreposição ≤ 5%.
+Observação: as imagens excluídas são as com mais lesão (menos área livre para o controle), então o A médio do subconjunto não é comparável em nível ao das 524; a comparação relevante é a ordem dos filtros e as correlações.

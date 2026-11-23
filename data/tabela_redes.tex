@@ -1,0 +1,11 @@
+% Tabela das redes (booktabs). Parametros = backbone Keras sem a cabeca de classificacao; AUC = media +- DP de 3 treinos, modelo sem filtro, FGADR; A = lesion reliance (pontos de probabilidade).
+\begin{tabular}{llrrr}
+\toprule
+Network & Family & Parameters (M) & AUC & $A$ (points) \\
+\midrule
+EfficientNetV2-S & EfficientNetV2 & 20.3 & $0.917\pm0.004$ & 11.5 \\
+EfficientNetV2-B2 & EfficientNetV2 & 8.8 & $0.911\pm0.003$ & 7.6 \\
+InceptionV3 & Inception & 21.8 & $0.904\pm0.002$ & 7.4 \\
+ResNet-50 & ResNet & 23.6 & $0.906\pm0.004$ & 9.9 \\
+\bottomrule
+\end{tabular}

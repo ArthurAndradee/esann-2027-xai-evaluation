@@ -1,0 +1,5 @@
+imagem,divisao,grau,rede,treino,camada_gradcam,p_original,p_lesoes_borradas,p_controle_borrado,A_da_imagem_pontos,n_regioes,area_mascara_pct,controle_sobre_lesao,papel
+1172_1.png,teste,2,EfficientNetV2-S sem filtro,0,"2x (block6a_expand_activation, 19x19)",0.866296,0.5729249,0.85355026,28.062534,11,3.298620820796188,0.0,principal (1A-1D)
+0689_1.png,teste,2,EfficientNetV2-S sem filtro,0,"2x (block6a_expand_activation, 19x19)",0.9393696,0.86192024,0.91994566,5.802542,6,3.5122649634791556,0.0073248407643312,grade 1E
+1710_3.png,teste,3,EfficientNetV2-S sem filtro,0,"2x (block6a_expand_activation, 19x19)",0.98742336,0.92709786,0.98825306,6.11552,121,3.364615608326529,0.0329122340425531,grade 1E
+0389_3.png,teste,4,EfficientNetV2-S sem filtro,0,"2x (block6a_expand_activation, 19x19)",0.9884151,0.91975075,0.990753,7.1002245,20,1.5245914475229585,0.0,grade 1E

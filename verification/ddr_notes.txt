@@ -1,0 +1,52 @@
+# Validação externa no DDR (H4, H5a, H5b): registro para o usuário. Texto do artigo é seu.
+
+## O que foi feito (e um aviso sobre o enunciado)
+Modelos TREINADOS NO FGADR (as 4 redes, 4 condições: sem filtro, CLAHE, Green channel, Grayscale; 10 seeds; 160 treinos) e AVALIADOS no DDR, sem nenhum ajuste. Este é a 'fase 2b' (repetições 70-79, 170-179, 270-279, 370-379), que repete a fase 2 original (repetições 40-49) depois da correção D5 (interpolação do DDR). O DDR nunca entrou em treino neste estudo até aqui. Treinar no próprio DDR é uma fase 3 SEPARADA, pré-registrada e EM EXECUÇÃO (360 treinos; ~metade concluída em 16/11/2026); NÃO há resultado dela para o artigo ainda e ela não deve ser citada como resultado.
+
+## Resultado
+Pré-condição pré-registrada: AUC do sem filtro no DDR ≥ 0,70 (e DP de p(RD) ≥ 0,05), em ≥ 3 das 4 redes. Resultado: só a InceptionV3 passa; logo H4, H5a e H5b ficam INCONCLUSIVAS (nem confirmadas nem refutadas), na escala de probabilidade e na escala logit (sensibilidade D7).
+rede | treinos (4 cond.) | AUC sem filtro no DDR (IC 95%) | atinge 0,70? | AUC sem filtro no FGADR
+EfficientNetV2-S | 40 | 0.654 [0.624; 0.682] | não | 0.917
+EfficientNetV2-B2 | 40 | 0.603 [0.581; 0.624] | não | 0.911
+InceptionV3 | 40 | 0.717 [0.680; 0.756] | sim | 0.904
+ResNet-50 | 40 | 0.643 [0.584; 0.703] | não | 0.906
+
+Veredito geral (regra pré-registrada): H4 inconclusiva; H5a inconclusiva; H5b inconclusiva. (Logit: H4 inconclusiva; H5a inconclusiva; H5b inconclusiva.)
+
+Só a InceptionV3 foi testada (regra pré-registrada); os números das outras 3 redes são DESCRITIVOS (marcador vazado na Figura 4):
+- EfficientNetV2-S (A sem filtro 4.8 pontos): CLAHE: A 3.8, mantém 80% [59; 108], ΔA -1.0 [-2.2; +0.3], ΔAUC -0.039; Green channel: A 8.8, mantém 185% [146; 238], ΔA +4.1 [+2.4; +6.0], ΔAUC +0.031; Grayscale: A 7.7, mantém 162% [135; 198], ΔA +2.9 [+1.8; +4.1], ΔAUC -0.016
+- EfficientNetV2-B2 (A sem filtro 7.6 pontos): CLAHE: A 6.0, mantém 79% [69; 90], ΔA -1.6 [-2.6; -0.7], ΔAUC +0.016; Green channel: A 9.1, mantém 119% [100; 142], ΔA +1.4 [+0.0; +3.1], ΔAUC -0.042; Grayscale: A 9.3, mantém 121% [106; 139], ΔA +1.6 [+0.5; +2.8], ΔAUC -0.007
+- InceptionV3 (A sem filtro 7.7 pontos): CLAHE: A 3.9, mantém 51% [36; 70], ΔA -3.8 [-5.5; -2.0], ΔAUC -0.022; Green channel: A 3.6, mantém 47% [30; 69], ΔA -4.1 [-6.0; -2.1], ΔAUC -0.088; Grayscale: A 4.0, mantém 52% [40; 67], ΔA -3.7 [-5.3; -2.2], ΔAUC -0.142
+- ResNet-50 (A sem filtro 4.3 pontos): CLAHE: A 3.8, mantém 89% [59; 126], ΔA -0.4 [-1.9; +1.0], ΔAUC +0.035; Green channel: A 6.4, mantém 150% [106; 203], ΔA +2.1 [+0.3; +3.8], ΔAUC -0.023; Grayscale: A 7.6, mantém 179% [130; 235], ΔA +3.4 [+1.5; +5.1], ΔAUC +0.015
+
+InceptionV3 (única apta), teste pré-registrado (dA em probabilidade; IC hierárquico; Holm entre os 3 testes): H4 CLAHE4.0: ΔA -3.8 pontos [-5.5; -2.0], p Holm 0.0003, vale = True; H5a GreenChannel: ΔA -4.1 pontos [-6.0; -2.1], p Holm 1.0000, vale = False; H5b Grayscale: ΔA -3.7 pontos [-5.3; -2.1], p Holm 1.0000, vale = False. Ou seja, no DDR o CLAHE reduz como no FGADR, mas Green channel e Grayscale TAMBÉM reduzem (no FGADR aumentam), com perda grande de AUC (ΔAUC −0,088 e −0,142 nessa rede).
+
+## Números de imagens
+AUC: 3.759 imagens de teste da graduação do DDR (grau 5 excluído; graus 0-1 → não referável 2.069, 2-4 → referável 1.690) ✓ (esperado 3.759).
+Ablação (A): **756** imagens com máscara (EX, HE, MA ou SE), NÃO 757: das 757 imagens de segmentação do DDR, uma não tem nenhuma máscara desses 4 tipos. (O DDR não tem máscaras de IRMA nem de neovasos; no FGADR há 6 tipos.) Diverge do 757 esperado em 1 imagem.
+
+## Texto exato de H4 e H5 (PREREGISTRO_FASE2.md, congelado em 2026-11-01)
+**H4 · O CLAHE reduz o uso de lesões.** ΔA(CLAHE4.0) < 0, significativo, em **≥ 3 das 4 arquiteturas**.
+**H5a · O GreenChannel aumenta o uso de lesões.** ΔA(GreenChannel) > 0, significativo, em ≥ 3 das 4.
+**H5b · O Grayscale aumenta o uso de lesões.** ΔA(Grayscale) > 0, significativo, em ≥ 3 das 4.
+Regra de validade e inferência (resumo fiel do documento): ΔA = A(filtro) − A(sem filtro) no DDR (A = ablação pós-filtro, média nas imagens com lesão; média das seeds). Bootstrap hierárquico, 10.000 reamostragens, seeds de cada condição sorteadas com reposição de forma independente e imagens pareadas; teste unilateral, α = 0,05, Holm entre os 3 testes de cada rede. Vale na rede se o sinal pontual é o previsto E p ajustado < 0,05. Hipótese confirmada se vale em ≥ 3 das 4 redes; inconclusiva se < 3 redes passam a pré-condição.
+
+## Por que CLAHE e a remoção de cor foram os casos de teste (registro)
+Foram escolhidos DEPOIS de ver a fase 1a no FGADR, não antes: o pré-registro da fase 1 previa testar no DDR só os filtros que 'dissociassem' (H1), e nenhum dissociou. Então as hipóteses H4/H5 são NOVAS e geradas pelos dados da 1a: (i) o CLAHE reduziu o uso das lesões (nas 4 redes na estimativa pontual; em 3 das 4 depois de incluir a variação entre seeds) com custo de AUC pequeno; (ii) Green channel e Grayscale AUMENTARAM o uso das lesões (achado exploratório não previsto; 3 das 4 redes). Por isso foram testados só em dados que não participaram de nada (modelos novos, seeds novas, DDR). As 5 condições de maior AUC média, previstas na seção 7 do pré-registro da fase 1, foram dispensadas por decisão do usuário (2026-11-01): diferenças menores que o ruído entre seeds.
+
+## Desvios registrados (PREREGISTRO_FASE2_DESVIOS.md e correlatos)
+- Fase 2 original (reps 40-49): 160 treinos; pré-condição falhou nas 4 redes (AUC no DDR 0,652 a 0,682); H4/H5 inconclusivas.
+- D5: as imagens do DDR eram reduzidas a 299 px com INTER_LINEAR e o FGADR com INTER_AREA (contra a especificação 'exatamente como no FGADR'); corrigido e refeito como fase 2b (160 treinos novos). A fase 2b foi decidida DEPOIS de ver a pré-condição falhar; isso deve ser dito. A pré-condição não mudou.
+- D6: bug do vigia (só execução). D7: A também na escala logit, como sensibilidade (prevalência 83% no FGADR contra 45% no DDR); sem divergência entre escalas. D8: o vigia falhou o portão de checksum por um bug meu; a análise foi rodada à mão com os scripts congelados intactos.
+- Nenhuma regra de decisão foi alterada depois de ver dados da 2b.
+
+## Integridade do DDR (verificada em 2026-11-13)
+Os arquivos do DDR usados no estudo foram comparados por SHA-256 com o download OFICIAL dos autores (Google Drive, zip em 10 partes, 18.218 entradas): 4.106 arquivos da graduação idênticos e 3.785 da segmentação (imagens e máscaras) idênticos pelo mesmo nome; 0 diferentes. Única ausência no oficial: o README.md do espelho (que, aliás, atribui o dataset a outros autores). O espelho (Hugging Face via Kaggle) só reorganiza as pastas (images/{test,train,val} → {test,train,valid}/image; annotations → label). Licença oficial CC BY-NC-SA 4.0 (o espelho diz CC BY 4.0, errado); citar Li et al., Information Sciences 501 (2019) 511-522. Detalhes: data/externo/DDR/LICENCA_E_ORIGEM.md; experiments/diagnostico_ddr/.
+
+## Por que o desempenho no DDR é baixo (o que foi testado e o que é hipótese)
+- TESTADO e descartado: interpolação. V2S, AUC 0.651 (LINEAR) contra 0.652 (AREA).
+- MEDIDO: AUC por grau (sem filtro, V2S, interpolação AREA): grau 0 contra 3 = 0.91; contra 2 = 0.66; contra 1 = 0.60; contra 4 = 0.62. O modelo separa bem o grau 3, mas falha no grau 2, que é a maioria dos referáveis no DDR (1344 de 1690; no teste: grau 0 1880, 1 189, 2 1344, 3 71, 4 275). Leitura registrada: domínio/critério de graduação, não pré-processamento.
+- HIPÓTESES NÃO TESTADAS: câmera e resolução diferentes (DDR ~1.700-2.000 px, várias câmeras; FGADR 1.280 px), prevalência (83% referável no FGADR contra 45% no DDR), critério de rotulagem do grau 2.
+
+## Figura 4 (decisão de desenho)
+Para cada filtro (CLAHE, Green channel, Grayscale) e rede: ponto = confiança mantida no DDR com IC 95% (bootstrap hierárquico de seeds e imagens), cruz = valor no FGADR; marcador vazado = rede com AUC do sem filtro < 0,70 no DDR (descritivo). Atenção: o IC da razão pode ser enorme quando o A do sem filtro no DDR é pequeno (denominador próximo de zero); a coluna *_unstable_denominator_share de ddr_results.csv informa.

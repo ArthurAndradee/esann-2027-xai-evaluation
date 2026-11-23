@@ -1,0 +1,5 @@
+arch,family,params_millions_backbone,input_size,flops,train_minutes,epochs_mean,auc_unfiltered_mean,auc_unfiltered_sd,A_unfiltered_points
+efficientnetv2s,EfficientNetV2,20.33136,299,not recorded,"not recorded per run (V2S ~8, ResNet-50 ~19 in the DDR trial; phase 3 logs)",,0.9169872834870748,0.004278695474913634,11.512697369580653
+efficientnetv2b2,EfficientNetV2,8.769374,299,not recorded,"not recorded per run (V2S ~8, ResNet-50 ~19 in the DDR trial; phase 3 logs)",,0.9114093233826234,0.002852229982806984,7.630145507562501
+inceptionv3,Inception,21.802784,299,not recorded,"not recorded per run (V2S ~8, ResNet-50 ~19 in the DDR trial; phase 3 logs)",,0.9041085307251349,0.002054326231748921,7.406712726289373
+resnet50,ResNet,23.587712,299,not recorded,"not recorded per run (V2S ~8, ResNet-50 ~19 in the DDR trial; phase 3 logs)",,0.9061403915388061,0.004122031869632161,9.920227088261642

@@ -1,0 +1,7 @@
+Diferencas > 1 ponto na Figura 4 (A mantido): nenhuma (maximo 0,5 ponto)
+Tipos de lesao (AHE/CLAHE na media das redes, % do sem filtro): lesion          EX    HE    MA    SE
+filter                              
+AHE40.0      -62.2 -40.6 -42.2 -13.2
+CLAHE4.0     -56.5 -33.7 -38.0  -9.5
+Grayscale     15.5  39.6  46.1   6.7
+GreenChannel  31.6  65.7  55.4  38.4

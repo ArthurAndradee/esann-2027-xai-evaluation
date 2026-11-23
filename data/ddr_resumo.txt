@@ -1,0 +1,9 @@
+# DDR (validação externa, fase 2b: modelos treinados no FGADR e avaliados no DDR; reps 70-79 etc.)
+Veredito geral (regras pré-registradas): H4: não avaliável (validade: só 1 de 4 redes com AUC ≥ 0,70); H5a: não avaliável (validade: só 1 de 4 redes com AUC ≥ 0,70); H5b: não avaliável (validade: só 1 de 4 redes com AUC ≥ 0,70)
+Redes com AUC do sem filtro ≥ 0,70: 1 de 4 (inceptionv3).
+AUC sem filtro no DDR: efficientnetv2s 0.654; efficientnetv2b2 0.603; inceptionv3 0.717; resnet50 0.643
+Imagens: AUC 3.759 (esperado 3.759). A: 756 (esperado 757; uma das 757 imagens de segmentação do DDR não tem nenhuma máscara EX/HE/MA/SE).
+Desvios do protocolo (uma linha cada): D5 interpolação do DDR (INTER_LINEAR→INTER_AREA) corrigida, refazendo os 160 treinos (fase 2b, decidida depois de ver a pré-condição falhar); D6 bug do vigia (só execução); D7 sensibilidade em escala logit (sem divergência); D8 análise rodada à mão por falha de portão de checksum (scripts congelados intactos).
+Rodada anterior (fase 2, interpolação errada, reps 40-49): AUC no DDR 0,652 a 0,682, nenhuma rede ≥ 0,70. Fase 2b: 0,603 a 0,717, só a InceptionV3 ≥ 0,70. O veredito não mudou (inconclusivo).
+Aviso: o treino no próprio DDR (fase 3, 360 treinos) é outro experimento, ainda em execução quando este material foi gerado; não entra aqui. Ver esann_materiais/FASE3_STATUS.txt.
+Só a InceptionV3 foi testada pela regra pré-registrada; as demais redes têm números descritivos (marcador vazado nas figuras).

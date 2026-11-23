@@ -1,0 +1,68 @@
+# Verificações (ESANN 2027). Ordem: valor encontrado, valor esperado, método, situação.
+Redes na ordem EfficientNetV2-S / -B2 / InceptionV3 / ResNet-50.
+
+## Otimismo por usar o teste na parada antecipada
+Encontrado: 0,002 a 0,004 de AUC (baseline 0,914 com validação = teste contra 0,910 com validação interna; CLAHE 0,898 contra 0,896); menor que o DP entre seeds (~0,007) naquele experimento.
+Esperado: 0,002 a 0,004
+Método: Rodada 3 (job 829979, experiments/diagnostico_auprc/CICLO_METODOLOGIA.md, seção 'Viés de validar no teste'): EfficientNetV2-S treinada com 1.100 imagens nos dois braços, um braço com a validação igual ao teste (como na campanha) e outro com validação interna separada; vício = AUC(val=teste) − AUC(val interna). Só V2S, baseline e CLAHE; não foi medido nas outras 3 redes.
+Situação: confere (medido em 2 condições da V2S; extrapolar às outras redes é suposição)
+
+## Desvio padrão da AUC entre treinos do mesmo pipeline e entre pipelines
+Encontrado: ENTRE TREINOS (DP agrupado de 3 treinos): pipelines com AUC média ≥ 0,85: 0.011 / 0.008 / 0.011 / 0.011 (agrupado nas 4 redes 0.010); pipelines sem nenhum treino colapsado: 0.014 / 0.012 / 0.013 / 0.013; todos os 185 (inclui colapsados): 0.018 / 0.019 / 0.055 / 0.051.  ENTRE PIPELINES (DP das médias): sem pipelines colapsados: 0.053 / 0.047 / 0.026 / 0.029; todos os 185: 0.069 / 0.071 / 0.117 / 0.114.
+Esperado: entre treinos ≈ 0,011; entre pipelines 0,026 a 0,053
+Método: AUC por treino (analise_h3/por_execucao.csv). Entre treinos: raiz da média das variâncias dos 3 treinos de cada pipeline. Entre pipelines: DP (ddof=1) das médias dos pipelines. 'Colapsado' = pipeline com algum treino com AUC < 0,70 ou DP de p(RD) < 0,05.
+Situação: confere SE as definições forem: entre pipelines = sem pipelines colapsados (0,026 a 0,053); entre treinos ≈ 0,011 = pipelines com AUC média ≥ 0,85. As outras definições dão valores bem maiores (a Inception e a ResNet-50 colapsam em muitos pipelines); o texto do artigo deve dizer qual.
+
+## Correlação entre pipelines restrita a não colapsados com AUC média em [0,89; 0,915]
+Encontrado: Spearman -0.04 / 0.32 / 0.20 / 0.30 (n = 46 / 70 / 67 / 85); Pearson -0.05 / 0.26 / 0.16 / 0.15
+Esperado: −0,04 / 0,32 / 0,20 / 0,30 (n = 46 / 70 / 67 / 85)
+Método: Médias dos 3 treinos por pipeline; exclui pipelines com algum treino colapsado; correlação de Spearman entre A e AUC.
+Situação: confere exatamente
+
+## H1: número de redes em que cada filtro cumpre a regra (dissocia)
+Encontrado: nenhum filtro em 3 ou 4 redes; em 2 redes: ['LABNorm']; em 1 rede (6): ['BenGraham', 'Gamma0.8', 'Gaussian', 'MaxGreen2.0', 'Morpho', 'Unsharp1.5']; nos demais: 0. H1 NÃO confirmada.
+Esperado: LAB normalization em 2 redes e seis filtros em 1
+Método: Regra: limite inferior do IC 95% de ΔAUC > −0,02 E ΔA < 0 com p unilateral Holm (entre os 17 filtros) < 0,05; IC por bootstrap de imagens, 3 seeds (analise_fase1a/resumo.json).
+Situação: confere (LABNorm 2; BenGraham, Gamma, Gaussian, MaxGreen, Morpho, Unsharp em 1)
+
+## H2: concordância entre redes dos efeitos dos 17 filtros em A
+Encontrado: média de Spearman 0.878 (faixa 0.846 a 0.966), p de permutação 1.0e-04. Reteste com a configuração da V2S: InceptionV3 0.900, ResNet-50 0.892 (Spearman entre ΔA com a configuração própria e ΔA com a da V2S, 17 filtros).
+Esperado: média 0,88 (0,85 a 0,97); reteste 0,90 e 0,89
+Método: Spearman dos 17 ΔA entre cada par de redes; permutação dos rótulos de filtro, 10.000 (analise_fase1a.py; analise_robustez.py).
+Situação: confere
+
+## H3: entre pipelines menos entre treinos
+Encontrado: diferença 0.690 / 0.701 / 0.762 / 0.804 (r entre 0.772 / 0.731 / 0.808 / 0.842; r dentro 0.082 / 0.030 / 0.046 / 0.037); sem colapsados 0.642 / 0.657 / 0.606 / 0.656 (condições restantes 172 / 169 / 137 / 144).
+Esperado: 0,69 a 0,80; sem colapsados 0,61 a 0,66
+Método: Spearman entre A e AUC das médias de 185 pipelines contra o dos desvios em relação à média do pipeline; IC por bootstrap (analise_h3/resumo.json).
+Situação: confere
+
+## Grad-CAM: AUPRC contra AUC
+Encontrado: Spearman entre pipelines 0.87 / 0.83 / 0.83 / 0.84; entre treinos (desvios) 0.10 / 0.08 / 0.08 / 0.02. (Pearson entre pipelines 0.89 / 0.87 / 0.87 / 0.85; entre treinos 0.10 / 0.01 / 0.06 / 0.04.)
+Esperado: 0,83 a 0,87 entre pipelines; 0,02 a 0,10 entre treinos
+Método: CORRELAÇÃO DE SPEARMAN (a mesma de H3 e S3), AUPRC do Grad-CAM na camada interpretada de cada rede (V2S, V2B2 e ResNet-50: 2x; InceptionV3: final), média de 524 imagens por treino (secundarias_fase1/por_execucao.csv). Pearson dá 0,85 a 0,89, fora da faixa do artigo.
+Situação: confere se o texto disser Spearman
+
+## Estudo anterior (ERAMIA): condições, treinos e correlação
+Encontrado:
+- Artigo submetido ao ERAMIA/RS: **495 condições** de pré-processamento (as que tinham 10/10 repetições na data), EfficientNetV2-S, 10 treinos por condição (4.950 treinos); correlação de Pearson AUC × Dice do Grad-CAM **r = 0,865** (R² = 0,749); AUC × IoU 0,862 (experiments/paper_auc_xai_correlacao/relatorio_completo.md).
+- A campanha foi completada depois: **576 condições × 10 repetições = 5.760 treinos** (de 2026-10-02), e a reanálise (experiments/analise_final_576/resumo.json) dá **Pearson AUC × Dice = 0,859** (p < 1e-160) e AUC × Pointing Game 0,825. O baseline sem filtro tem AUC 0,912 e posto 3; o melhor é o LABNorm (0,917, p = 0,23), nenhum acima do baseline após Holm; 466 abaixo.
+- Portanto o "0,86" do ESANN corresponde às 576 condições (0,859) e o do artigo do ERAMIA às 495 (0,865). Os slides dizem 576 e 9 ou 10 treinos: 9/10 vem da mini-campanha de 10 filtros (alguns com 9 treinos), não da campanha principal (10/10 em todas as 576).
+Esperado: r = 0,86; 576 condições e 9 ou 10 treinos; outra fonte falava em 495.
+Método: leitura dos relatórios do próprio repositório; sem recomputar (o arquivo por execução das 5.760 fica em analise_final_576/execucoes_reps0-9.csv).
+Situação: as duas contagens existem e as duas estão certas para estudos diferentes; o artigo deve citar 495 para o artigo do ERAMIA e 576 só se for o estudo expandido.
+
+## Orçamento de fila do cluster (PCAD) como motivo de não treinar as 576 nas 4 redes
+Encontrado: não há nenhum registro no repositório de um "orçamento de fila" formal do PCAD. O que está registrado, e é citável, é: (1) os nós de GPU do contêiner são só grace1 e grace2 (arm64), compartilhados com outros usuários; (2) a prioridade de fila do usuário é baixa (fairshare), então os jobs esperam até dias por um nó (CICLO_METODOLOGIA.md, 2026-10-15 e 2026-10-21); (3) limite de 24 h por job e de 10 jobs submetidos por usuário (QOS). Conta do próprio estudo (não é limite do PCAD): 576 condições × 4 redes × 3 treinos = 6.912 treinos de ~8 min (V2S) a ~19 min (ResNet-50) mais avaliação com protocolo de explicabilidade, contra os 2.220 treinos feitos em 185 pipelines (~15 dias com 1 a 2 GPUs).
+Frase sugerida (a ser confirmada pelo usuário): "As GPUs disponíveis eram dois nós compartilhados, com fila longa e limite de 24 h por job; por isso o desenho de 185 pipelines (D-ótimo) substituiu a grade completa de 576 nas quatro redes."
+Se o limite exato de horas-GPU for exigido pelo artigo, ele não está nos arquivos: só a administração do PCAD pode informar.
+
+## Acurácia (contagens e testes pareados)
+Encontrado (pipelines filtrados, n = 184 por rede):
+- EffNetV2-S: AUC média < sem filtro − 0,02 em 155; > sem filtro em 2; melhor: LABNorm 0.919 (+0.002); significativamente melhores após Holm (184 comparações): 0; piores: 88; menor p bruto unilateral de melhora: 0.351; filtros únicos com IC de ΔAUC todo acima de 0: 0, todo abaixo de 0: 8 (de 17)
+- EffNetV2-B2: AUC média < sem filtro − 0,02 em 115; > sem filtro em 7; melhor: Median 0.923 (+0.012); significativamente melhores após Holm (184 comparações): 0; piores: 65; menor p bruto unilateral de melhora: 0.044; filtros únicos com IC de ΔAUC todo acima de 0: 0, todo abaixo de 0: 7 (de 17)
+- InceptionV3: AUC média < sem filtro − 0,02 em 101; > sem filtro em 20; melhor: LABNorm > GreenChannel > AHE40.0 > Gaussian 0.911 (+0.007); significativamente melhores após Holm (184 comparações): 0; piores: 61; menor p bruto unilateral de melhora: 0.252; filtros únicos com IC de ΔAUC todo acima de 0: 0, todo abaixo de 0: 5 (de 17)
+- ResNet-50: AUC média < sem filtro − 0,02 em 87; > sem filtro em 28; melhor: Gamma0.8 > Grayscale > Median 0.919 (+0.013); significativamente melhores após Holm (184 comparações): 0; piores: 47; menor p bruto unilateral de melhora: 0.080; filtros únicos com IC de ΔAUC todo acima de 0: 0, todo abaixo de 0: 3 (de 17)
+Esperado: 155 / 115 / 101 / 87 abaixo; melhores +0,002 / +0,012 / +0,007 / +0,013; 0 filtros únicos acima de zero.
+Método: ΔAUC = AUC média dos 3 treinos do pipeline − a do sem filtro. IC 95% e p por bootstrap hierárquico pareado (20.000): imagens de teste (553; 459 referáveis e 94 não, sorteio estratificado, o mesmo para pipeline e sem filtro) e seeds (3, com reposição, independentes entre as duas condições); p unilateral de 'melhor', Holm entre os 184 pipelines de cada rede. Variante só de imagens (seeds fixas) nas colunas ic_img_* de accuracy_tests_all_pipelines.csv.
+Situação: contagens e melhores diferenças conferem. NENHUM pipeline é significativamente melhor que o sem filtro em nenhuma rede. Filtros únicos com IC todo abaixo de zero (hierárquico; só imagens): 8 (11) / 7 (8) / 5 (7) / 3 (4). A cautela é a mesma da fase 1: com 3 treinos o IC hierárquico é largo.

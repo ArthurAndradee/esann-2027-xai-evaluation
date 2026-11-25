@@ -1,0 +1,5 @@
+Tabela no lugar da Figura 5 (cadeias de pré-processamento com a mesma AUC).
+- tabela_chains.tex: cole no artigo (ou \input{tabela_chains}). Precisa de graphicx, array e booktabs.
+- images/pipeline1..5.png: miniaturas 299x299 px (Ben Graham>CLAHE>Gaussian, AHE>Gaussian, sem filtro, LAB>Green channel>Median, LAB>Grayscale), do exame 1172_1.png do FGADR (dataset público). Coloque a pasta images/ ao lado do .tex.
+- Não foi possível compilar aqui (sem LaTeX no cluster): confira a largura ao compilar. Se a tabela passar da largura do texto (12,2 cm), reduza o m{7.2cm} da coluna Pipeline.
+- Os valores vêm de dados/chains_similar_auc.csv (AUC e A médios das 4 redes) e de dados/networks.csv (sem filtro: AUC 0,910, A 9,1).

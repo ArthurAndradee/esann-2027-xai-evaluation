@@ -10,10 +10,10 @@ Data, figures and scripts behind the figures and numbers of the ESANN 2027 submi
 |---|---|
 | `docs/PARA_O_ARTIGO.md` | Facts, numbers, caveats and limitations per figure and result (written in Portuguese). Start here. |
 | `data/` | CSV/JSON/TXT behind every figure and number: per-pipeline results (`pipelines_long.csv`, `pipelines_summary.csv`), filter effects, correlations, lesion types, control overlap and sensitivity, decomposition of A (`A_decomposicao*`), DDR results and phase 3 summary. |
-| `figures/final/` | Final PDFs (width 12.2 cm, Latin Modern font). Figure 3 is a LaTeX table (`data/tabela_redes.tex`). |
-| `figures/v5_reduced_height/` | Figures 2, 3 and 5 of the paper re-rendered at reduced height (PDF, PNG, grayscale PNG). |
+| `figures/paper/` | Final PDFs of Figures 1–4 under the file names used in the LaTeX (width 12.17 cm, Latin Modern font), plus `png/` previews and a grayscale preview. |
+| `figures/table_chains/` | LaTeX table (`tabela_chains.tex`) and the five thumbnails that replace the former Figure 5. The network table is `data/tabela_redes.tex`. |
 | `verification/` | Value found vs. expected and method for the reported numbers. |
-| `scripts/` | Python and R scripts that produce the data and figures. `make_figuras_v8.R` and `make_figuras_v9.R` produce the final figures (`v3`–`v5` are helpers). |
+| `scripts/` | Python and R scripts that produce the data and figures. `make_figuras_v8.R` (Figure 1), `make_figuras_v9.R` (Figure 2) and `make_figuras_v10.R` (Figures 3 and 4) produce the final figures (`v3`–`v5` are helpers). |
 | `fonts/` | "LM Fig": Latin Modern Roman 10 plus ρ, ≥, ≤, ■, ●, ▲ from Latin Modern Math; needed only to regenerate the figures. |
 
 ## Not included
